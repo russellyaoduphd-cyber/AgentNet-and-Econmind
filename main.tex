@@ -9,8 +9,8 @@
 \usepackage{hyperref}
 \definecolor{codeMuted}{RGB}{96,110,129}
 \definecolor{codeAccent}{RGB}{176,76,21}
-\newcommand{\codeline}[2]{\textcolor{codeMuted}{#1}&\texttt{\detokenize{#2}}\\[2pt]}
-\newcommand{\accentline}[2]{\textcolor{codeMuted}{#1}&\textcolor{codeAccent}{\texttt{\detokenize{#2}}}\\[2pt]}
+\newcommand{\codeline}[3]{\textcolor{codeMuted}{#1}&\hspace*{#2em}\texttt{\detokenize{#3}}\\[2pt]}
+\newcommand{\accentline}[3]{\textcolor{codeMuted}{#1}&\hspace*{#2em}\textcolor{codeAccent}{\texttt{\detokenize{#3}}}\\[2pt]}
 \title{AgentNet and Econmind}
 \author{Qining Shen}
 \date{November 2026}
@@ -21,11 +21,11 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.0pt}{8pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{345}{def fit(self):}
-\codeline{347}{    for task in self.train_dataset:}
-\codeline{348}{        final_task_chain = self.solve_a_single_task(task)}
-\codeline{349}{        result = self.evaluate_task_result(final_task_chain, task.correct_answer, "Train")}
-\accentline{350}{        self.update_agent_graph(final_task_chain, result)}
+\codeline{345}{0.00}{def fit(self):}
+\codeline{347}{1.92}{for task in self.train_dataset:}
+\codeline{348}{3.84}{final_task_chain = self.solve_a_single_task(task)}
+\codeline{349}{3.84}{result = self.evaluate_task_result(final_task_chain, task.correct_answer, "Train")}
+\accentline{350}{3.84}{self.update_agent_graph(final_task_chain, result)}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -37,18 +37,18 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.7pt}{8.7pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{18}{def __init__(self, agent_config, agent_graph_config):}
-\codeline{21}{    self.edge_weight = {}}
-\codeline{22}{    self.edge_success_rate = {}}
-\codeline{25}{    self.agent_neighbor_dict = self.initilize_graph(agent_graph_config)}
-\codeline{37}{    for source_agent_id, agent in agents.items():}
-\codeline{38}{        if source_agent_id not in self.edge_weight.keys():}
-\codeline{39}{            self.edge_weight[source_agent_id] = {}}
-\codeline{40}{            self.edge_success_rate[source_agent_id] = {}}
-\codeline{41}{        for target_agent_id, agent in agents.items():}
-\codeline{42}{            if source_agent_id != target_agent_id:}
-\accentline{43}{                self.edge_weight[source_agent_id][target_agent_id] = 1.0}
-\accentline{44}{                self.edge_success_rate[source_agent_id][target_agent_id] = 0.0}
+\codeline{18}{0.00}{def __init__(self, agent_config, agent_graph_config):}
+\codeline{21}{1.92}{self.edge_weight = {}}
+\codeline{22}{1.92}{self.edge_success_rate = {}}
+\codeline{25}{1.92}{self.agent_neighbor_dict = self.initilize_graph(agent_graph_config)}
+\codeline{37}{1.92}{for source_agent_id, agent in agents.items():}
+\codeline{38}{3.84}{if source_agent_id not in self.edge_weight.keys():}
+\codeline{39}{5.76}{self.edge_weight[source_agent_id] = {}}
+\codeline{40}{5.76}{self.edge_success_rate[source_agent_id] = {}}
+\codeline{41}{3.84}{for target_agent_id, agent in agents.items():}
+\codeline{42}{5.76}{if source_agent_id != target_agent_id:}
+\accentline{43}{7.68}{self.edge_weight[source_agent_id][target_agent_id] = 1.0}
+\accentline{44}{7.68}{self.edge_success_rate[source_agent_id][target_agent_id] = 0.0}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -60,20 +60,20 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.7pt}{8.7pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{74}{def select_an_agent(self, task_type):}
-\codeline{79}{    for agent_id in outcoming_agents_id:}
-\codeline{80}{        agent = self.agents[agent_id]}
-\codeline{82}{        agent_info = agent.get_self_info()}
-\codeline{84}{        abilities = agent_info["abilities"]}
-\codeline{89}{        ability_names = task_to_ability_map[task_type]}
-\codeline{90}{        total_value, ability_num = 0, 0}
-\codeline{91}{        for name in ability_names:}
-\codeline{92}{            ability_num += 1}
-\codeline{93}{            total_value += abilities[name]}
-\accentline{94}{        average_ability_value = total_value / ability_num}
-\codeline{102}{    if not neighbors_info:}
-\codeline{104}{        return self.sample_an_agent()}
-\accentline{113}{    best_agent_id = random.choice(best_agents)}
+\codeline{74}{0.00}{def select_an_agent(self, task_type):}
+\codeline{79}{1.92}{for agent_id in outcoming_agents_id:}
+\codeline{80}{3.84}{agent = self.agents[agent_id]}
+\codeline{82}{3.84}{agent_info = agent.get_self_info()}
+\codeline{84}{3.84}{abilities = agent_info["abilities"]}
+\codeline{89}{3.84}{ability_names = task_to_ability_map[task_type]}
+\codeline{90}{3.84}{total_value, ability_num = 0, 0}
+\codeline{91}{3.84}{for name in ability_names:}
+\codeline{92}{5.76}{ability_num += 1}
+\codeline{93}{5.76}{total_value += abilities[name]}
+\accentline{94}{3.84}{average_ability_value = total_value / ability_num}
+\codeline{102}{1.92}{if not neighbors_info:}
+\codeline{104}{3.84}{return self.sample_an_agent()}
+\accentline{113}{1.92}{best_agent_id = random.choice(best_agents)}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -85,23 +85,23 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.7pt}{8.98pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{11}{default_agent_config: &default_agent_config}
-\codeline{12}{  LLM: gpt-4o-mini}
-\accentline{13}{  abilities:}
-\accentline{14}{    reasoning: 0.6}
-\accentline{15}{    mathematical: 0.6}
-\accentline{16}{    language: 0.6}
-\accentline{17}{    knowledge: 0.6}
-\accentline{18}{    sequence: 0.6}
-\accentline{19}{    spatial: 0.6}
-\accentline{20}{    inference: 0.6}
-\codeline{29}{agent_config:}
-\codeline{30}{- id: 0}
-\codeline{31}{  config: *default_agent_config}
-\codeline{32}{- id: 1}
-\codeline{33}{  config: *default_agent_config}
-\codeline{34}{- id: 2}
-\codeline{35}{  config: *default_agent_config}
+\codeline{11}{0.00}{default_agent_config: &default_agent_config}
+\codeline{12}{0.96}{LLM: gpt-4o-mini}
+\accentline{13}{0.96}{abilities:}
+\accentline{14}{1.92}{reasoning: 0.6}
+\accentline{15}{1.92}{mathematical: 0.6}
+\accentline{16}{1.92}{language: 0.6}
+\accentline{17}{1.92}{knowledge: 0.6}
+\accentline{18}{1.92}{sequence: 0.6}
+\accentline{19}{1.92}{spatial: 0.6}
+\accentline{20}{1.92}{inference: 0.6}
+\codeline{29}{0.00}{agent_config:}
+\codeline{30}{0.00}{- id: 0}
+\codeline{31}{0.96}{config: *default_agent_config}
+\codeline{32}{0.00}{- id: 1}
+\codeline{33}{0.96}{config: *default_agent_config}
+\codeline{34}{0.00}{- id: 2}
+\codeline{35}{0.96}{config: *default_agent_config}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -113,21 +113,21 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.7pt}{8.98pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\accentline{157}{"causal_judgement": [}
-\codeline{158}{    "reasoning",}
-\codeline{159}{    "inference"}
-\codeline{160}{],}
-\codeline{177}{"multistep_arithmetic_two": [}
-\codeline{178}{    "mathematical"}
-\codeline{179}{],}
-\accentline{180}{"geometric_shapes": [}
-\codeline{181}{    "mathematical",}
-\codeline{182}{    "spatial"}
-\codeline{183}{],}
-\codeline{191}{"date_understanding": [}
-\codeline{192}{    "mathematical",}
-\codeline{193}{    "language"}
-\codeline{194}{],}
+\accentline{157}{0.00}{"causal_judgement": [}
+\codeline{158}{1.92}{"reasoning",}
+\codeline{159}{1.92}{"inference"}
+\codeline{160}{0.00}{],}
+\codeline{177}{0.00}{"multistep_arithmetic_two": [}
+\codeline{178}{1.92}{"mathematical"}
+\codeline{179}{0.00}{],}
+\accentline{180}{0.00}{"geometric_shapes": [}
+\codeline{181}{1.92}{"mathematical",}
+\codeline{182}{1.92}{"spatial"}
+\codeline{183}{0.00}{],}
+\codeline{191}{0.00}{"date_understanding": [}
+\codeline{192}{1.92}{"mathematical",}
+\codeline{193}{1.92}{"language"}
+\codeline{194}{0.00}{],}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -139,11 +139,11 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{4.3pt}{5.76pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{241}{ROUTER_SYSTEM_PROMPT = """}
-\codeline{242}{You are an intelligent agent in a multi-agent system. Your role is to analyze tasks based on your expertise and collaborate with other specialized agents.}
-\codeline{243}{You are a task router - make independent decisions within your expertise domain.}
-\accentline{244}{Consider agent abilities and network topology, but prioritize expertise matching.}
-\codeline{245}{"""}
+\codeline{241}{0.00}{ROUTER_SYSTEM_PROMPT = """}
+\codeline{242}{0.00}{You are an intelligent agent in a multi-agent system. Your role is to analyze tasks based on your expertise and collaborate with other specialized agents.}
+\codeline{243}{0.00}{You are a task router - make independent decisions within your expertise domain.}
+\accentline{244}{0.00}{Consider agent abilities and network topology, but prioritize expertise matching.}
+\codeline{245}{0.00}{"""}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -155,19 +155,19 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.7pt}{8.98pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\accentline{248}{ROUTER_PROMPT_FORMAT = """}
-\codeline{249}{**Major Task**: {major_problem}}
-\codeline{251}{**Your Expertise & Experience**:}
-\accentline{252}{{current_agent_info}}
-\codeline{254}{**Previous Related Successes**:}
-\accentline{255}{{experiences}}
-\codeline{257}{**Current Task Details**:}
-\codeline{258}{- Problem: {task_description}}
-\codeline{259}{- Type: {task_type}}
-\codeline{261}{**Progress**:}
-\codeline{262}{- Completed Steps: {task_context}}
-\codeline{264}{**Available Specialists**: some infomation and status of other agents}
-\accentline{265}{{agent_info}}
+\accentline{248}{0.00}{ROUTER_PROMPT_FORMAT = """}
+\codeline{249}{0.00}{**Major Task**: {major_problem}}
+\codeline{251}{0.00}{**Your Expertise & Experience**:}
+\accentline{252}{0.00}{{current_agent_info}}
+\codeline{254}{0.00}{**Previous Related Successes**:}
+\accentline{255}{0.00}{{experiences}}
+\codeline{257}{0.00}{**Current Task Details**:}
+\codeline{258}{0.00}{- Problem: {task_description}}
+\codeline{259}{0.00}{- Type: {task_type}}
+\codeline{261}{0.00}{**Progress**:}
+\codeline{262}{0.00}{- Completed Steps: {task_context}}
+\codeline{264}{0.00}{**Available Specialists**: some infomation and status of other agents}
+\accentline{265}{0.00}{{agent_info}}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -179,17 +179,17 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{5.2pt}{6.97pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{274}{Analyze and decide:}
-\accentline{275}{1. Should this task be split into executable parts, executed here, or forwarded to another agent?}
-\codeline{280}{3. If you decide to forward the task, consider the following:}
-\codeline{281}{   - Who is the most suitable agent to forward the task to? Consider:}
-\codeline{282}{     - Agent abilities for this task type}
-\codeline{283}{     - Success rate}
-\codeline{284}{     - Network connection (prefer direct neighbors)}
-\codeline{289}{Provide your decision in the following format:}
-\accentline{291}{DECISION: [split/forward/execute]}
-\codeline{292}{REASON: [detailed explanation of your decision, including ability considerations]}
-\accentline{296}{NEXT_AGENT_ID: [The ID of the agent to whom the task should be forwarded if decided to forward]}
+\codeline{274}{0.00}{Analyze and decide:}
+\accentline{275}{0.00}{1. Should this task be split into executable parts, executed here, or forwarded to another agent?}
+\codeline{280}{0.00}{3. If you decide to forward the task, consider the following:}
+\codeline{281}{1.44}{- Who is the most suitable agent to forward the task to? Consider:}
+\codeline{282}{2.40}{- Agent abilities for this task type}
+\codeline{283}{2.40}{- Success rate}
+\codeline{284}{2.40}{- Network connection (prefer direct neighbors)}
+\codeline{289}{0.00}{Provide your decision in the following format:}
+\accentline{291}{0.00}{DECISION: [split/forward/execute]}
+\codeline{292}{0.00}{REASON: [detailed explanation of your decision, including ability considerations]}
+\accentline{296}{0.00}{NEXT_AGENT_ID: [The ID of the agent to whom the task should be forwarded if decided to forward]}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -201,19 +201,19 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.7pt}{8.98pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{66}{experiences = self.router_pool.get_relevant_experiences(task, self.agent_id, self.retrieval_num)}
-\codeline{68}{query_prompt = self.router_make_prompt(}
-\codeline{69}{    experiences=experiences,}
-\codeline{70}{    task=task,}
-\codeline{71}{    decide_mode=decide_mode,}
-\codeline{72}{    self_info=self_info,}
-\codeline{73}{    neighbors_info=neighbors_info}
-\codeline{74}{    )}
-\accentline{76}{response = self.get_llm_response(}
-\accentline{77}{    system_prompt=ROUTER_SYSTEM_PROMPT,}
-\accentline{78}{    query_prompt=query_prompt}
-\codeline{79}{    )}
-\codeline{83}{decision = response_dict.get('DECISION', '').lower().strip()}
+\codeline{66}{0.00}{experiences = self.router_pool.get_relevant_experiences(task, self.agent_id, self.retrieval_num)}
+\codeline{68}{0.00}{query_prompt = self.router_make_prompt(}
+\codeline{69}{1.92}{experiences=experiences,}
+\codeline{70}{1.92}{task=task,}
+\codeline{71}{1.92}{decide_mode=decide_mode,}
+\codeline{72}{1.92}{self_info=self_info,}
+\codeline{73}{1.92}{neighbors_info=neighbors_info}
+\codeline{74}{1.92}{)}
+\accentline{76}{0.00}{response = self.get_llm_response(}
+\accentline{77}{1.92}{system_prompt=ROUTER_SYSTEM_PROMPT,}
+\accentline{78}{1.92}{query_prompt=query_prompt}
+\codeline{79}{1.92}{)}
+\codeline{83}{0.00}{decision = response_dict.get('DECISION', '').lower().strip()}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -225,17 +225,17 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{5.5pt}{7.1pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{63}{def router_decide_action(self, task, self_info, neighbors_info, task_history, decide_mode="Normal"):}
-\accentline{66}{    experiences = self.router_pool.get_relevant_experiences(task, self.agent_id, self.retrieval_num)}
-\codeline{68}{    query_prompt = self.router_make_prompt(}
-\codeline{69}{        experiences=experiences,}
-\codeline{70}{        task=task,}
-\codeline{71}{        decide_mode=decide_mode,}
-\codeline{73}{        neighbors_info=neighbors_info}
-\accentline{76}{    response = self.get_llm_response(}
-\codeline{77}{        system_prompt=ROUTER_SYSTEM_PROMPT,}
-\codeline{78}{        query_prompt=query_prompt}
-\accentline{83}{    decision = response_dict.get('DECISION', '').lower().strip()}
+\codeline{63}{0.00}{def router_decide_action(self, task, self_info, neighbors_info, task_history, decide_mode="Normal"):}
+\accentline{66}{1.92}{experiences = self.router_pool.get_relevant_experiences(task, self.agent_id, self.retrieval_num)}
+\codeline{68}{1.92}{query_prompt = self.router_make_prompt(}
+\codeline{69}{3.84}{experiences=experiences,}
+\codeline{70}{3.84}{task=task,}
+\codeline{71}{3.84}{decide_mode=decide_mode,}
+\codeline{73}{3.84}{neighbors_info=neighbors_info}
+\accentline{76}{1.92}{response = self.get_llm_response(}
+\codeline{77}{3.84}{system_prompt=ROUTER_SYSTEM_PROMPT,}
+\codeline{78}{3.84}{query_prompt=query_prompt}
+\accentline{83}{1.92}{decision = response_dict.get('DECISION', '').lower().strip()}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -247,21 +247,21 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.7pt}{8.7pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{86}{def solve_a_single_task(self, task):}
-\codeline{87}{    task_chain = TaskChain(task)}
-\codeline{90}{    current_agent_id = self.agent_graph.select_an_agent(task.task_type)}
-\codeline{95}{    while True:}
-\accentline{97}{        output = current_agent.decide_action(task_chain, forward_times)}
-\codeline{110}{        decision = output["decision"]}
-\codeline{116}{        if decision in ["forward"]:}
-\accentline{120}{            current_agent = self.agent_graph.agents[next_agent_id]}
-\codeline{121}{            forward_times -= 1}
-\accentline{132}{        elif decision == "execute":}
-\codeline{152}{            break}
-\accentline{155}{        elif decision in ["split"]:}
-\codeline{175}{            task_chain.create_next_task()}
-\codeline{177}{            output = current_agent.decide_next_agent_id(task_chain,self.constraints)}
-\codeline{208}{    return task_chain}
+\codeline{86}{0.00}{def solve_a_single_task(self, task):}
+\codeline{87}{1.92}{task_chain = TaskChain(task)}
+\codeline{90}{1.92}{current_agent_id = self.agent_graph.select_an_agent(task.task_type)}
+\codeline{95}{1.92}{while True:}
+\accentline{97}{3.84}{output = current_agent.decide_action(task_chain, forward_times)}
+\codeline{110}{3.84}{decision = output["decision"]}
+\codeline{116}{3.84}{if decision in ["forward"]:}
+\accentline{120}{5.76}{current_agent = self.agent_graph.agents[next_agent_id]}
+\codeline{121}{5.76}{forward_times -= 1}
+\accentline{132}{3.84}{elif decision == "execute":}
+\codeline{152}{5.76}{break}
+\accentline{155}{3.84}{elif decision in ["split"]:}
+\codeline{175}{5.76}{task_chain.create_next_task()}
+\codeline{177}{5.76}{output = current_agent.decide_next_agent_id(task_chain,self.constraints)}
+\codeline{208}{1.92}{return task_chain}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -273,17 +273,17 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{5.5pt}{7.1pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{790}{self.current_load += 1}
-\codeline{791}{self.total_task_num[current_task.task_type] += 1}
-\accentline{793}{relevant_experiences = self.executor_module.get_relevant_experiences(current_task)}
-\codeline{795}{if user_react == True:}
-\accentline{797}{    output = self.executor_module.generate_thought(current_task, relevant_experiences)}
-\codeline{798}{    current_task.set_thought(output["thought"])}
-\codeline{800}{    relevant_experiences_by_thought = self.executor_module.get_relevant_experiences_by_thought(current_task)}
-\accentline{801}{    relevant_experiences = relevant_experiences_by_thought}
-\codeline{805}{if decision == "execute":}
-\codeline{807}{elif decision == "split":}
-\codeline{810}{self.current_load -= 1}
+\codeline{790}{0.00}{self.current_load += 1}
+\codeline{791}{0.00}{self.total_task_num[current_task.task_type] += 1}
+\accentline{793}{0.00}{relevant_experiences = self.executor_module.get_relevant_experiences(current_task)}
+\codeline{795}{0.00}{if user_react == True:}
+\accentline{797}{1.92}{output = self.executor_module.generate_thought(current_task, relevant_experiences)}
+\codeline{798}{1.92}{current_task.set_thought(output["thought"])}
+\codeline{800}{1.92}{relevant_experiences_by_thought = self.executor_module.get_relevant_experiences_by_thought(current_task)}
+\accentline{801}{1.92}{relevant_experiences = relevant_experiences_by_thought}
+\codeline{805}{0.00}{if decision == "execute":}
+\codeline{807}{0.00}{elif decision == "split":}
+\codeline{810}{0.00}{self.current_load -= 1}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -295,15 +295,15 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.0pt}{8pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{213}{def evaluate_task_result(self, task_chain, correct_answer, mode="Train"):}
-\codeline{214}{    raw_result = task_chain.get_final_result()}
-\codeline{215}{    final_result = extract_answer(raw_result)}
-\accentline{219}{    success = evaluate_answer(final_result.lower().strip(), correct_answer.lower().strip())}
-\codeline{229}{    if mode == "Train":}
-\codeline{230}{        self.train_accuracy.update(success)}
-\codeline{233}{    if mode == "Test":}
-\codeline{234}{        self.test_accuracy.update(success)}
-\codeline{237}{    return result}
+\codeline{213}{0.00}{def evaluate_task_result(self, task_chain, correct_answer, mode="Train"):}
+\codeline{214}{1.92}{raw_result = task_chain.get_final_result()}
+\codeline{215}{1.92}{final_result = extract_answer(raw_result)}
+\accentline{219}{1.92}{success = evaluate_answer(final_result.lower().strip(), correct_answer.lower().strip())}
+\codeline{229}{1.92}{if mode == "Train":}
+\codeline{230}{3.84}{self.train_accuracy.update(success)}
+\codeline{233}{1.92}{if mode == "Test":}
+\codeline{234}{3.84}{self.test_accuracy.update(success)}
+\codeline{237}{1.92}{return result}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -315,16 +315,16 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.7pt}{8.7pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{240}{def update_agent_graph(self, task_chain, result):}
-\codeline{243}{    success = result["success"]}
-\codeline{245}{    task_history = task_chain.task_history}
-\codeline{246}{    for single_task_history in task_history:}
-\codeline{253}{        experience = single_task_history.experience}
-\accentline{254}{        experience.success = success}
-\codeline{256}{        if mode in ["Execution", "Split_Execution"]:}
-\codeline{257}{            agent.add_executor_experience(experience)}
-\codeline{259}{        elif mode in ["Decide_Next_Agent_ID", "Router_Decision"]:}
-\codeline{260}{            agent.add_router_experience(experience)}
+\codeline{240}{0.00}{def update_agent_graph(self, task_chain, result):}
+\codeline{243}{1.92}{success = result["success"]}
+\codeline{245}{1.92}{task_history = task_chain.task_history}
+\codeline{246}{1.92}{for single_task_history in task_history:}
+\codeline{253}{3.84}{experience = single_task_history.experience}
+\accentline{254}{3.84}{experience.success = success}
+\codeline{256}{3.84}{if mode in ["Execution", "Split_Execution"]:}
+\codeline{257}{5.76}{agent.add_executor_experience(experience)}
+\codeline{259}{3.84}{elif mode in ["Decide_Next_Agent_ID", "Router_Decision"]:}
+\codeline{260}{5.76}{agent.add_router_experience(experience)}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -336,17 +336,17 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.7pt}{9.1pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{108}{def add_experience(self, abilities, experience: RouterExperience) -> None:}
-\codeline{109}{    task_type = experience.task_type}
-\accentline{114}{    if experience.success == False:}
-\accentline{115}{        self.failure_experiences[task_type].append(experience)}
-\codeline{116}{        return 0}
-\accentline{117}{    elif experience.success == True:}
-\accentline{118}{        self.success_experiences[task_type].append(experience)}
-\codeline{125}{        if retrieval_experience_num >= self.capacity and self.capacity >= 0:}
-\codeline{126}{            self._smart_eviction(abilities, task_type, experience)}
-\codeline{127}{        else:}
-\accentline{128}{            self.retrieval_experiences[task_type].append(experience)}
+\codeline{108}{0.00}{def add_experience(self, abilities, experience: RouterExperience) -> None:}
+\codeline{109}{1.92}{task_type = experience.task_type}
+\accentline{114}{1.92}{if experience.success == False:}
+\accentline{115}{3.84}{self.failure_experiences[task_type].append(experience)}
+\codeline{116}{3.84}{return 0}
+\accentline{117}{1.92}{elif experience.success == True:}
+\accentline{118}{3.84}{self.success_experiences[task_type].append(experience)}
+\codeline{125}{3.84}{if retrieval_experience_num >= self.capacity and self.capacity >= 0:}
+\codeline{126}{5.76}{self._smart_eviction(abilities, task_type, experience)}
+\codeline{127}{3.84}{else:}
+\accentline{128}{5.76}{self.retrieval_experiences[task_type].append(experience)}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -358,15 +358,15 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{5.7pt}{7.8pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\accentline{237}{def get_relevant_experiences(self, task, source_agent_id, top_k, threshold=0.7, success_only=True):}
-\codeline{239}{    query_embedding = self.compute_embedding(task.major_problem + task.progress_text + task.description)}
-\codeline{241}{    all_scores = []}
-\codeline{242}{    for experiences in self.retrieval_experiences.values():}
-\codeline{243}{        for exp in experiences:}
-\accentline{244}{            if success_only and not exp.success:}
-\accentline{245}{                continue}
-\codeline{248}{            all_scores.append((-similarity, exp))}
-\codeline{251}{    sorted_scores = sorted(all_scores, key=lambda x: x[0])}
+\accentline{237}{0.00}{def get_relevant_experiences(self, task, source_agent_id, top_k, threshold=0.7, success_only=True):}
+\codeline{239}{1.92}{query_embedding = self.compute_embedding(task.major_problem + task.progress_text + task.description)}
+\codeline{241}{1.92}{all_scores = []}
+\codeline{242}{1.92}{for experiences in self.retrieval_experiences.values():}
+\codeline{243}{3.84}{for exp in experiences:}
+\accentline{244}{5.76}{if success_only and not exp.success:}
+\accentline{245}{7.68}{continue}
+\codeline{248}{5.76}{all_scores.append((-similarity, exp))}
+\codeline{251}{1.92}{sorted_scores = sorted(all_scores, key=lambda x: x[0])}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -382,14 +382,14 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{5.5pt}{7.1pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{243}{success = result["success"]}
-\codeline{264}{        source_agent_id = single_task_history.current_agent_id}
-\codeline{266}{        if "NEXT_AGENT_ID" in single_task_history.format_response.keys():}
-\codeline{267}{            target_agent_id = single_task_history.format_response["NEXT_AGENT_ID"].strip()}
-\codeline{272}{            execution_time = single_task_history.execution_time}
-\codeline{274}{            if target_agent_id.isdigit():}
-\codeline{275}{                target_agent_id = int(target_agent_id)}
-\accentline{278}{                self.agent_graph.update_edge_weight(source_agent_id, target_agent_id, execution_time, success)}
+\codeline{243}{0.00}{success = result["success"]}
+\codeline{264}{3.84}{source_agent_id = single_task_history.current_agent_id}
+\codeline{266}{3.84}{if "NEXT_AGENT_ID" in single_task_history.format_response.keys():}
+\codeline{267}{5.76}{target_agent_id = single_task_history.format_response["NEXT_AGENT_ID"].strip()}
+\codeline{272}{5.76}{execution_time = single_task_history.execution_time}
+\codeline{274}{5.76}{if target_agent_id.isdigit():}
+\codeline{275}{7.68}{target_agent_id = int(target_agent_id)}
+\accentline{278}{7.68}{self.agent_graph.update_edge_weight(source_agent_id, target_agent_id, execution_time, success)}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -401,12 +401,12 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.0pt}{8pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{140}{def update_edge_weight(self, source_agent_id, target_agent_id, execution_time, success):}
-\codeline{146}{    current_weight = self.edge_weight[source_agent_id].get(target_agent_id, 1.0)}
-\accentline{147}{    success_factor = 1.1 if success else 0.9}
-\codeline{148}{    time_factor = min(1.0, 1.0 / (execution_time * 0.1)) if execution_time > 0 else 1.0}
-\accentline{152}{    new_weight = current_weight * success_factor * time_factor}
-\accentline{155}{    self.edge_weight[source_agent_id][target_agent_id] = max(0.1, min(2.0, new_weight))}
+\codeline{140}{0.00}{def update_edge_weight(self, source_agent_id, target_agent_id, execution_time, success):}
+\codeline{146}{1.92}{current_weight = self.edge_weight[source_agent_id].get(target_agent_id, 1.0)}
+\accentline{147}{1.92}{success_factor = 1.1 if success else 0.9}
+\codeline{148}{1.92}{time_factor = min(1.0, 1.0 / (execution_time * 0.1)) if execution_time > 0 else 1.0}
+\accentline{152}{1.92}{new_weight = current_weight * success_factor * time_factor}
+\accentline{155}{1.92}{self.edge_weight[source_agent_id][target_agent_id] = max(0.1, min(2.0, new_weight))}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -418,17 +418,17 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{5.1pt}{6.9pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{121}{def collect_neighbors_info(self, agent_id, task):}
-\codeline{122}{    outcoming_neighbors_id  = self.agent_neighbor_dict[agent_id]["outcoming_agent_id"]}
-\codeline{124}{    for neighbor_id in outcoming_neighbors_id:}
-\accentline{125}{        if self.edge_weight[agent_id][neighbor_id] <= 0.3:}
-\codeline{127}{            continue}
-\codeline{128}{        neighbor_agent = self.agents[neighbor_id]}
-\codeline{140}{def update_edge_weight(self, source_agent_id, target_agent_id, execution_time, success):}
-\codeline{142}{    current_rate = self.edge_success_rate[source_agent_id].get(target_agent_id, 0.6)}
-\accentline{143}{    self.edge_success_rate[source_agent_id][target_agent_id] = current_rate * 0.9 + (1.0 if success else 0.0) * 0.1}
-\codeline{155}{    self.edge_weight[source_agent_id][target_agent_id] = max(0.1, min(2.0, new_weight))}
-\accentline{160}{        self.agent_neighbor_dict[source_agent_id]["outcoming_agent_id"].remove(target_agent_id)}
+\codeline{121}{0.00}{def collect_neighbors_info(self, agent_id, task):}
+\codeline{122}{1.92}{outcoming_neighbors_id  = self.agent_neighbor_dict[agent_id]["outcoming_agent_id"]}
+\codeline{124}{1.92}{for neighbor_id in outcoming_neighbors_id:}
+\accentline{125}{3.84}{if self.edge_weight[agent_id][neighbor_id] <= 0.3:}
+\codeline{127}{5.76}{continue}
+\codeline{128}{3.84}{neighbor_agent = self.agents[neighbor_id]}
+\codeline{140}{0.00}{def update_edge_weight(self, source_agent_id, target_agent_id, execution_time, success):}
+\codeline{142}{1.92}{current_rate = self.edge_success_rate[source_agent_id].get(target_agent_id, 0.6)}
+\accentline{143}{1.92}{self.edge_success_rate[source_agent_id][target_agent_id] = current_rate * 0.9 + (1.0 if success else 0.0) * 0.1}
+\codeline{155}{1.92}{self.edge_weight[source_agent_id][target_agent_id] = max(0.1, min(2.0, new_weight))}
+\accentline{160}{3.84}{self.agent_neighbor_dict[source_agent_id]["outcoming_agent_id"].remove(target_agent_id)}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -442,14 +442,14 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.0pt}{8pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{849}{def update_abilities(self, task_type, complexity, execution_time, success):}
-\codeline{851}{    if success:}
-\codeline{852}{        self.successful_task_num[task_type] += 1}
-\accentline{855}{        ability_gain = 0.1}
-\codeline{857}{        for ability_type in task_to_ability_map[task_type]:}
-\accentline{858}{            self.abilities[ability_type] = min(2.0, self.abilities[ability_type] + ability_gain)}
-\codeline{865}{    else:}
-\codeline{866}{        pass}
+\codeline{849}{0.00}{def update_abilities(self, task_type, complexity, execution_time, success):}
+\codeline{851}{1.92}{if success:}
+\codeline{852}{3.84}{self.successful_task_num[task_type] += 1}
+\accentline{855}{3.84}{ability_gain = 0.1}
+\codeline{857}{3.84}{for ability_type in task_to_ability_map[task_type]:}
+\accentline{858}{5.76}{self.abilities[ability_type] = min(2.0, self.abilities[ability_type] + ability_gain)}
+\codeline{865}{1.92}{else:}
+\codeline{866}{3.84}{pass}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -461,16 +461,16 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.7pt}{9.1pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{291}{for single_task_history in task_history:}
-\codeline{292}{    mode = single_task_history.mode}
-\codeline{293}{    agent_id = single_task_history.current_agent_id}
-\codeline{294}{    agent = self.agent_graph.agents[agent_id]}
-\accentline{296}{    if mode in ["Execution", "Split_Execution"]:}
-\accentline{298}{        agent.update_abilities(}
-\codeline{299}{            single_task_history.task.task_type,}
-\codeline{300}{            single_task_history.task.complexity,}
-\codeline{301}{            single_task_history.execution_time,}
-\codeline{302}{            success)}
+\codeline{291}{0.00}{for single_task_history in task_history:}
+\codeline{292}{1.92}{mode = single_task_history.mode}
+\codeline{293}{1.92}{agent_id = single_task_history.current_agent_id}
+\codeline{294}{1.92}{agent = self.agent_graph.agents[agent_id]}
+\accentline{296}{1.92}{if mode in ["Execution", "Split_Execution"]:}
+\accentline{298}{3.84}{agent.update_abilities(}
+\codeline{299}{5.76}{single_task_history.task.task_type,}
+\codeline{300}{5.76}{single_task_history.task.complexity,}
+\codeline{301}{5.76}{single_task_history.execution_time,}
+\codeline{302}{5.76}{success)}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -482,14 +482,14 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{5.1pt}{6.9pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{849}{def update_abilities(self, task_type, complexity, execution_time, success):}
-\codeline{851}{    if success:}
-\accentline{860}{        for related_type, correlation in self.task_correlations[task_type].items():}
-\accentline{861}{            if correlation > 0.3:}
-\codeline{862}{                for ability_type in task_to_ability_map[related_type]:}
-\accentline{863}{                    self.abilities[ability_type] = min(2.0, self.abilities[ability_type] + ability_gain * correlation * 0.5)}
-\accentline{865}{    else:}
-\accentline{866}{        pass}
+\codeline{849}{0.00}{def update_abilities(self, task_type, complexity, execution_time, success):}
+\codeline{851}{1.92}{if success:}
+\accentline{860}{3.84}{for related_type, correlation in self.task_correlations[task_type].items():}
+\accentline{861}{5.76}{if correlation > 0.3:}
+\codeline{862}{7.68}{for ability_type in task_to_ability_map[related_type]:}
+\accentline{863}{9.60}{self.abilities[ability_type] = min(2.0, self.abilities[ability_type] + ability_gain * correlation * 0.5)}
+\accentline{865}{1.92}{else:}
+\accentline{866}{3.84}{pass}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -505,15 +505,15 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.0pt}{8pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{770}{def _train_forward(self, env: BaseEnv, step_ckpt_save_path: Optional[str] = None):}
-\accentline{820}{        self._run_auction_action_loop(env, step_ckpt_save_path=step_ckpt_save_path)}
-\codeline{822}{        if self.reward_scheme in ("path_reward_only", "path_reward_and_stepwise_reward"):}
-\accentline{823}{            reward_details = self._apply_path_rewards(env)}
-\accentline{849}{        bankrupt_agents = self.remove_bankrupt_agents(env)}
-\codeline{850}{        self._ensure_necessary_roles_exist(bankrupt_agents, env)}
-\codeline{852}{        if bankrupt_agents:}
-\codeline{872}{            self.logger.log("✅ No bankruptcies - episode ACCEPTED", indent=1, must_print=True)}
-\codeline{900}{    self._resolve_bankruptcy_births(all_bankrupts_in_episode, env)}
+\codeline{770}{0.00}{def _train_forward(self, env: BaseEnv, step_ckpt_save_path: Optional[str] = None):}
+\accentline{820}{3.84}{self._run_auction_action_loop(env, step_ckpt_save_path=step_ckpt_save_path)}
+\codeline{822}{3.84}{if self.reward_scheme in ("path_reward_only", "path_reward_and_stepwise_reward"):}
+\accentline{823}{5.76}{reward_details = self._apply_path_rewards(env)}
+\accentline{849}{3.84}{bankrupt_agents = self.remove_bankrupt_agents(env)}
+\codeline{850}{3.84}{self._ensure_necessary_roles_exist(bankrupt_agents, env)}
+\codeline{852}{3.84}{if bankrupt_agents:}
+\codeline{872}{5.76}{self.logger.log("✅ No bankruptcies - episode ACCEPTED", indent=1, must_print=True)}
+\codeline{900}{1.92}{self._resolve_bankruptcy_births(all_bankrupts_in_episode, env)}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -525,14 +525,14 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{5.5pt}{7.1pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{502}{def _run_auction_action_loop(self, env: BaseEnv, step_ckpt_save_path: Optional[str] = None):}
-\codeline{528}{    for step in tqdm(range(self.max_steps_per_episode), disable=not self.logger.should_show_progress_bar()):}
-\codeline{531}{        terminal_mode = self._is_terminal_mode_step(step)}
-\codeline{536}{        if terminal_mode:}
-\codeline{537}{            all_agents = self.population.get_all()}
-\accentline{538}{            active_agents = self._restrict_agents_for_terminal_mode(all_agents)}
-\accentline{559}{            active_agents = self.population.get_active(}
-\codeline{576}{            )}
+\codeline{502}{0.00}{def _run_auction_action_loop(self, env: BaseEnv, step_ckpt_save_path: Optional[str] = None):}
+\codeline{528}{1.92}{for step in tqdm(range(self.max_steps_per_episode), disable=not self.logger.should_show_progress_bar()):}
+\codeline{531}{3.84}{terminal_mode = self._is_terminal_mode_step(step)}
+\codeline{536}{3.84}{if terminal_mode:}
+\codeline{537}{5.76}{all_agents = self.population.get_all()}
+\accentline{538}{5.76}{active_agents = self._restrict_agents_for_terminal_mode(all_agents)}
+\accentline{559}{5.76}{active_agents = self.population.get_active(}
+\codeline{576}{5.76}{)}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -544,18 +544,18 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.7pt}{8.7pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{587}{if self.bid_scheme == "fixed":}
-\codeline{590}{    for agent in active_agents:}
-\codeline{591}{        if agent.get_status() == AgentStatus.NOVICE:}
-\accentline{592}{            agent.set_bid(self.base_bid + self.novice_bid_epsilon)}
-\codeline{600}{        elif agent.get_status() == AgentStatus.VETERAN:}
-\codeline{601}{            agent.set_bid(self.base_bid)}
-\codeline{602}{elif self.bid_scheme == "fixed_with_eps":}
-\codeline{620}{elif self.bid_scheme == "holland":}
-\codeline{643}{            if agent.wealth >= self.tycoon_wealth_threshold:}
-\accentline{645}{                agent.set_bid(self.holland_alpha * agent.wealth)}
-\codeline{655}{        elif agent.get_status() == AgentStatus.TYCOON:}
-\accentline{656}{            agent.set_bid(self.holland_alpha * agent.wealth)}
+\codeline{587}{0.00}{if self.bid_scheme == "fixed":}
+\codeline{590}{1.92}{for agent in active_agents:}
+\codeline{591}{3.84}{if agent.get_status() == AgentStatus.NOVICE:}
+\accentline{592}{5.76}{agent.set_bid(self.base_bid + self.novice_bid_epsilon)}
+\codeline{600}{3.84}{elif agent.get_status() == AgentStatus.VETERAN:}
+\codeline{601}{5.76}{agent.set_bid(self.base_bid)}
+\codeline{602}{0.00}{elif self.bid_scheme == "fixed_with_eps":}
+\codeline{620}{0.00}{elif self.bid_scheme == "holland":}
+\codeline{643}{5.76}{if agent.wealth >= self.tycoon_wealth_threshold:}
+\accentline{645}{7.68}{agent.set_bid(self.holland_alpha * agent.wealth)}
+\codeline{655}{3.84}{elif agent.get_status() == AgentStatus.TYCOON:}
+\accentline{656}{5.76}{agent.set_bid(self.holland_alpha * agent.wealth)}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -567,14 +567,14 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.7pt}{8.7pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{663}{max_bid = max(a.get_bid() for a in active_agents)}
-\codeline{664}{top_bidders = [a for a in active_agents if a.get_bid() == max_bid]}
-\accentline{665}{winner = random.choice(top_bidders)}
-\codeline{669}{if training:}
-\accentline{670}{    payment = winner.get_bid()}
-\codeline{671}{    winner.lose_money(payment)}
-\codeline{673}{    if prev_winner is not None:}
-\accentline{674}{        prev_winner.gain_money(payment)}
+\codeline{663}{0.00}{max_bid = max(a.get_bid() for a in active_agents)}
+\codeline{664}{0.00}{top_bidders = [a for a in active_agents if a.get_bid() == max_bid]}
+\accentline{665}{0.00}{winner = random.choice(top_bidders)}
+\codeline{669}{0.00}{if training:}
+\accentline{670}{1.92}{payment = winner.get_bid()}
+\codeline{671}{1.92}{winner.lose_money(payment)}
+\codeline{673}{1.92}{if prev_winner is not None:}
+\accentline{674}{3.84}{prev_winner.gain_money(payment)}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -586,21 +586,21 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.7pt}{8.7pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{689}{chain_window.append(winner)}
-\accentline{692}{action = winner.act(env)}
-\accentline{696}{reward = env.apply(action)}
-\codeline{699}{    if self.reward_scheme == "path_reward_and_stepwise_reward":}
-\codeline{700}{        if split_chain and reward != 0:}
-\codeline{704}{            seen_ids = set()}
-\codeline{705}{            chain_uniq: List[BaseAgent] = []}
-\codeline{706}{            for ag in chain_window:}
-\accentline{711}{            share = reward / len(chain_uniq)}
-\codeline{712}{            for ag in chain_uniq:}
-\accentline{713}{                ag.gain_money(share)}
-\codeline{714}{                ag.gain_capability(share)}
-\codeline{722}{                )}
-\codeline{723}{        else:}
-\codeline{724}{            winner.gain_money(reward)}
+\codeline{689}{0.00}{chain_window.append(winner)}
+\accentline{692}{0.00}{action = winner.act(env)}
+\accentline{696}{0.00}{reward = env.apply(action)}
+\codeline{699}{1.92}{if self.reward_scheme == "path_reward_and_stepwise_reward":}
+\codeline{700}{3.84}{if split_chain and reward != 0:}
+\codeline{704}{5.76}{seen_ids = set()}
+\codeline{705}{5.76}{chain_uniq: List[BaseAgent] = []}
+\codeline{706}{5.76}{for ag in chain_window:}
+\accentline{711}{5.76}{share = reward / len(chain_uniq)}
+\codeline{712}{5.76}{for ag in chain_uniq:}
+\accentline{713}{7.68}{ag.gain_money(share)}
+\codeline{714}{7.68}{ag.gain_capability(share)}
+\codeline{722}{7.68}{)}
+\codeline{723}{3.84}{else:}
+\codeline{724}{5.76}{winner.gain_money(reward)}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -612,19 +612,19 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{5.6pt}{7.6pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{689}{chain_window.append(winner)}
-\codeline{690}{if len(chain_window) > chain_window_size:}
-\codeline{691}{    chain_window = chain_window[-chain_window_size:]}
-\codeline{699}{    if self.reward_scheme == "path_reward_and_stepwise_reward":}
-\accentline{700}{        if split_chain and reward != 0:}
-\codeline{704}{            seen_ids = set()}
-\codeline{705}{            chain_uniq: List[BaseAgent] = []}
-\codeline{706}{            for ag in chain_window:}
-\codeline{707}{                if ag.id in seen_ids:}
-\codeline{708}{                    continue}
-\codeline{709}{                seen_ids.add(ag.id)}
-\codeline{710}{                chain_uniq.append(ag)}
-\accentline{711}{            share = reward / len(chain_uniq)}
+\codeline{689}{0.00}{chain_window.append(winner)}
+\codeline{690}{0.00}{if len(chain_window) > chain_window_size:}
+\codeline{691}{1.92}{chain_window = chain_window[-chain_window_size:]}
+\codeline{699}{1.92}{if self.reward_scheme == "path_reward_and_stepwise_reward":}
+\accentline{700}{3.84}{if split_chain and reward != 0:}
+\codeline{704}{5.76}{seen_ids = set()}
+\codeline{705}{5.76}{chain_uniq: List[BaseAgent] = []}
+\codeline{706}{5.76}{for ag in chain_window:}
+\codeline{707}{7.68}{if ag.id in seen_ids:}
+\codeline{708}{9.60}{continue}
+\codeline{709}{7.68}{seen_ids.add(ag.id)}
+\codeline{710}{7.68}{chain_uniq.append(ag)}
+\accentline{711}{5.76}{share = reward / len(chain_uniq)}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -636,15 +636,15 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.7pt}{9.1pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{699}{if self.reward_scheme == "path_reward_and_stepwise_reward":}
-\codeline{700}{    if split_chain and reward != 0:}
-\accentline{711}{        share = reward / len(chain_uniq)}
-\codeline{712}{        for ag in chain_uniq:}
-\accentline{713}{            ag.gain_money(share)}
-\accentline{714}{            ag.gain_capability(share)}
-\codeline{723}{    else:}
-\accentline{724}{        winner.gain_money(reward)}
-\accentline{725}{        winner.gain_capability(reward)}
+\codeline{699}{0.00}{if self.reward_scheme == "path_reward_and_stepwise_reward":}
+\codeline{700}{1.92}{if split_chain and reward != 0:}
+\accentline{711}{3.84}{share = reward / len(chain_uniq)}
+\codeline{712}{3.84}{for ag in chain_uniq:}
+\accentline{713}{5.76}{ag.gain_money(share)}
+\accentline{714}{5.76}{ag.gain_capability(share)}
+\codeline{723}{1.92}{else:}
+\accentline{724}{3.84}{winner.gain_money(reward)}
+\accentline{725}{3.84}{winner.gain_capability(reward)}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -658,23 +658,23 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.7pt}{8.7pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{11}{class RewardConfig:}
-\accentline{16}{    reward_scheme: str = "path_reward_only"}
-\codeline{17}{    path_reward_scale: float = 1.0}
-\codeline{19}{    env_reward_scale: float = 1.0}
-\codeline{21}{    center_env_reward: bool = True}
-\accentline{36}{    path_reward_per_unique_author: bool = False}
-\accentline{45}{    step_reward_split_chain: bool = False}
-\codeline{46}{    step_reward_chain_window: int = 3}
-\codeline{48}{    def centered_score(self, score: float) -> float:}
-\codeline{49}{        return 2.0 * score - 1.0}
-\codeline{51}{    def reward_signal(self, score: float) -> float:}
-\codeline{53}{        base = self.centered_score(score) if self.center_env_reward else score}
-\codeline{54}{        return self.env_reward_scale * base}
-\codeline{59}{    def path_reward_per_agent(self, score: float, path_length: int) -> float:}
-\codeline{60}{        if path_length <= 0:}
-\codeline{61}{            return 0.0}
-\accentline{62}{        return self.path_reward_scale * self.reward_signal(score) / path_length}
+\codeline{11}{0.00}{class RewardConfig:}
+\accentline{16}{1.92}{reward_scheme: str = "path_reward_only"}
+\codeline{17}{1.92}{path_reward_scale: float = 1.0}
+\codeline{19}{1.92}{env_reward_scale: float = 1.0}
+\codeline{21}{1.92}{center_env_reward: bool = True}
+\accentline{36}{1.92}{path_reward_per_unique_author: bool = False}
+\accentline{45}{1.92}{step_reward_split_chain: bool = False}
+\codeline{46}{1.92}{step_reward_chain_window: int = 3}
+\codeline{48}{1.92}{def centered_score(self, score: float) -> float:}
+\codeline{49}{3.84}{return 2.0 * score - 1.0}
+\codeline{51}{1.92}{def reward_signal(self, score: float) -> float:}
+\codeline{53}{3.84}{base = self.centered_score(score) if self.center_env_reward else score}
+\codeline{54}{3.84}{return self.env_reward_scale * base}
+\codeline{59}{1.92}{def path_reward_per_agent(self, score: float, path_length: int) -> float:}
+\codeline{60}{3.84}{if path_length <= 0:}
+\codeline{61}{5.76}{return 0.0}
+\accentline{62}{3.84}{return self.path_reward_scale * self.reward_signal(score) / path_length}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -686,19 +686,19 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{5.7pt}{7.8pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\accentline{16}{reward_scheme: str = "path_reward_only"}
-\codeline{21}{center_env_reward: bool = True}
-\codeline{45}{step_reward_split_chain: bool = False}
-\codeline{46}{step_reward_chain_window: int = 3}
-\codeline{48}{def centered_score(self, score: float) -> float:}
-\accentline{49}{    return 2.0 * score - 1.0}
-\codeline{51}{def reward_signal(self, score: float) -> float:}
-\accentline{53}{    base = self.centered_score(score) if self.center_env_reward else score}
-\accentline{54}{    return self.env_reward_scale * base}
-\codeline{59}{def path_reward_per_agent(self, score: float, path_length: int) -> float:}
-\codeline{60}{    if path_length <= 0:}
-\codeline{61}{        return 0.0}
-\accentline{62}{    return self.path_reward_scale * self.reward_signal(score) / path_length}
+\accentline{16}{0.00}{reward_scheme: str = "path_reward_only"}
+\codeline{21}{0.00}{center_env_reward: bool = True}
+\codeline{45}{0.00}{step_reward_split_chain: bool = False}
+\codeline{46}{0.00}{step_reward_chain_window: int = 3}
+\codeline{48}{0.00}{def centered_score(self, score: float) -> float:}
+\accentline{49}{1.92}{return 2.0 * score - 1.0}
+\codeline{51}{0.00}{def reward_signal(self, score: float) -> float:}
+\accentline{53}{1.92}{base = self.centered_score(score) if self.center_env_reward else score}
+\accentline{54}{1.92}{return self.env_reward_scale * base}
+\codeline{59}{0.00}{def path_reward_per_agent(self, score: float, path_length: int) -> float:}
+\codeline{60}{1.92}{if path_length <= 0:}
+\codeline{61}{3.84}{return 0.0}
+\accentline{62}{1.92}{return self.path_reward_scale * self.reward_signal(score) / path_length}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -712,19 +712,19 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.0pt}{8pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{388}{def _apply_path_rewards(self, env: BaseEnv) -> Dict[str, Any]:}
-\codeline{401}{    score = self._get_terminal_score(env)}
-\codeline{402}{    pay_score = self._get_path_reward_score(env)}
-\codeline{403}{    reward_signal = self.config.reward.reward_signal(pay_score)}
-\codeline{404}{    path_agents = self._get_episode_path_agents(env)}
-\accentline{409}{    if self.config.reward.path_reward_per_unique_author:}
-\codeline{417}{        payout_targets = unique_agents}
-\codeline{418}{    else:}
-\codeline{419}{        payout_targets = path_agents}
-\accentline{421}{    per_agent_reward = self.config.reward.path_reward_per_agent(pay_score, len(payout_targets))}
-\codeline{423}{    for agent in payout_targets:}
-\accentline{424}{        agent.gain_money(per_agent_reward)}
-\accentline{425}{        agent.gain_capability(per_agent_reward)}
+\codeline{388}{0.00}{def _apply_path_rewards(self, env: BaseEnv) -> Dict[str, Any]:}
+\codeline{401}{1.92}{score = self._get_terminal_score(env)}
+\codeline{402}{1.92}{pay_score = self._get_path_reward_score(env)}
+\codeline{403}{1.92}{reward_signal = self.config.reward.reward_signal(pay_score)}
+\codeline{404}{1.92}{path_agents = self._get_episode_path_agents(env)}
+\accentline{409}{1.92}{if self.config.reward.path_reward_per_unique_author:}
+\codeline{417}{3.84}{payout_targets = unique_agents}
+\codeline{418}{1.92}{else:}
+\codeline{419}{3.84}{payout_targets = path_agents}
+\accentline{421}{1.92}{per_agent_reward = self.config.reward.path_reward_per_agent(pay_score, len(payout_targets))}
+\codeline{423}{1.92}{for agent in payout_targets:}
+\accentline{424}{3.84}{agent.gain_money(per_agent_reward)}
+\accentline{425}{3.84}{agent.gain_capability(per_agent_reward)}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -736,19 +736,19 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{5.7pt}{7.8pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{404}{path_agents = self._get_episode_path_agents(env)}
-\accentline{409}{if self.config.reward.path_reward_per_unique_author:}
-\codeline{410}{    seen_ids = set()}
-\codeline{411}{    unique_agents: List[BaseAgent] = []}
-\codeline{412}{    for a in path_agents:}
-\codeline{413}{        if a.id in seen_ids:}
-\codeline{414}{            continue}
-\codeline{415}{        seen_ids.add(a.id)}
-\codeline{416}{        unique_agents.append(a)}
-\accentline{417}{    payout_targets = unique_agents}
-\codeline{418}{else:}
-\accentline{419}{    payout_targets = path_agents}
-\accentline{421}{per_agent_reward = self.config.reward.path_reward_per_agent(pay_score, len(payout_targets))}
+\codeline{404}{0.00}{path_agents = self._get_episode_path_agents(env)}
+\accentline{409}{0.00}{if self.config.reward.path_reward_per_unique_author:}
+\codeline{410}{1.92}{seen_ids = set()}
+\codeline{411}{1.92}{unique_agents: List[BaseAgent] = []}
+\codeline{412}{1.92}{for a in path_agents:}
+\codeline{413}{3.84}{if a.id in seen_ids:}
+\codeline{414}{5.76}{continue}
+\codeline{415}{3.84}{seen_ids.add(a.id)}
+\codeline{416}{3.84}{unique_agents.append(a)}
+\accentline{417}{1.92}{payout_targets = unique_agents}
+\codeline{418}{0.00}{else:}
+\accentline{419}{1.92}{payout_targets = path_agents}
+\accentline{421}{0.00}{per_agent_reward = self.config.reward.path_reward_per_agent(pay_score, len(payout_targets))}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -760,14 +760,14 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.7pt}{9.1pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{111}{def gain_money(self, amount: float):}
-\accentline{117}{    self.wealth += amount}
-\codeline{119}{def gain_capability(self, amount: float):}
-\accentline{125}{    self.capability_score += amount}
-\codeline{127}{def lose_money(self, amount: float):}
-\accentline{133}{    self.wealth -= amount}
-\codeline{171}{def check_bankruptcy(self) -> bool:}
-\accentline{177}{    return self.wealth < 0}
+\codeline{111}{0.00}{def gain_money(self, amount: float):}
+\accentline{117}{1.92}{self.wealth += amount}
+\codeline{119}{0.00}{def gain_capability(self, amount: float):}
+\accentline{125}{1.92}{self.capability_score += amount}
+\codeline{127}{0.00}{def lose_money(self, amount: float):}
+\accentline{133}{1.92}{self.wealth -= amount}
+\codeline{171}{0.00}{def check_bankruptcy(self) -> bool:}
+\accentline{177}{1.92}{return self.wealth < 0}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -783,15 +783,15 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.0pt}{8pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\accentline{849}{    bankrupt_agents = self.remove_bankrupt_agents(env)}
-\codeline{850}{    self._ensure_necessary_roles_exist(bankrupt_agents, env)}
-\codeline{852}{    if bankrupt_agents:}
-\codeline{872}{        self.logger.log("✅ No bankruptcies - episode ACCEPTED", indent=1, must_print=True)}
-\codeline{886}{if rent_due and not in_preheat:}
-\codeline{888}{    for agent in self.population.get_all():}
-\codeline{889}{        agent.lose_money(rent)}
-\accentline{900}{self._resolve_bankruptcy_births(all_bankrupts_in_episode, env)}
-\accentline{905}{    self._periodic_births(env)}
+\accentline{849}{1.92}{bankrupt_agents = self.remove_bankrupt_agents(env)}
+\codeline{850}{1.92}{self._ensure_necessary_roles_exist(bankrupt_agents, env)}
+\codeline{852}{1.92}{if bankrupt_agents:}
+\codeline{872}{3.84}{self.logger.log("✅ No bankruptcies - episode ACCEPTED", indent=1, must_print=True)}
+\codeline{886}{0.00}{if rent_due and not in_preheat:}
+\codeline{888}{1.92}{for agent in self.population.get_all():}
+\codeline{889}{3.84}{agent.lose_money(rent)}
+\accentline{900}{0.00}{self._resolve_bankruptcy_births(all_bankrupts_in_episode, env)}
+\accentline{905}{1.92}{self._periodic_births(env)}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
@@ -803,18 +803,18 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{6.7pt}{8.7pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{285}{def _resolve_bankruptcy_births(}
-\codeline{292}{        return}
-\codeline{295}{    p_a = self.config.evolution.p_a}
-\codeline{296}{    p_b = self.config.evolution.p_b}
-\accentline{297}{    for bankrupt in all_bankrupts_in_episode:}
-\codeline{298}{        draw = random.random()}
-\accentline{299}{        if draw < p_a:}
-\codeline{300}{            parent = self._select_best_agent_for_good_birth()}
-\accentline{301}{            if parent is not None:}
-\codeline{302}{                self._add_born_agent(self.birth_good_agent(parent))}
-\codeline{303}{        elif draw < p_a + p_b:}
-\codeline{304}{            self._add_born_agent(self.birth_bad_agent(bankrupt, env))}
+\codeline{285}{0.00}{def _resolve_bankruptcy_births(}
+\codeline{292}{3.84}{return}
+\codeline{295}{1.92}{p_a = self.config.evolution.p_a}
+\codeline{296}{1.92}{p_b = self.config.evolution.p_b}
+\accentline{297}{1.92}{for bankrupt in all_bankrupts_in_episode:}
+\codeline{298}{3.84}{draw = random.random()}
+\accentline{299}{3.84}{if draw < p_a:}
+\codeline{300}{5.76}{parent = self._select_best_agent_for_good_birth()}
+\accentline{301}{5.76}{if parent is not None:}
+\codeline{302}{7.68}{self._add_born_agent(self.birth_good_agent(parent))}
+\codeline{303}{3.84}{elif draw < p_a + p_b:}
+\codeline{304}{5.76}{self._add_born_agent(self.birth_bad_agent(bankrupt, env))}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
