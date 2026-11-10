@@ -1,11 +1,42 @@
 \documentclass[aspectratio=169]{beamer}
-\usetheme{Warsaw}        % 主题，可换成 Berlin, Warsaw, Copenhagen, metropolis 等
-\usecolortheme{whale}  % 配色，可换成 beaver, whale, dolphin 等
-\usepackage{graphicx} % Required for inserting images
+\usetheme{Warsaw}        % Original theme
+\usecolortheme{whale}    % Original color scheme
+\usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{framed}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Display real source snippets as editable text, not screenshots.
+\definecolor{codeBg}{RGB}{247,249,252}
+\definecolor{codeBorder}{RGB}{209,219,231}
+\definecolor{codeBlue}{RGB}{35,82,152}
+\definecolor{codeGreen}{RGB}{28,112,75}
+\definecolor{codeMuted}{RGB}{96,110,129}
+\definecolor{codeAccent}{RGB}{176,76,21}
+\lstdefinestyle{researchcode}{
+    language=Python,
+    basicstyle=\ttfamily\scriptsize,
+    keywordstyle=\color{codeBlue}\bfseries,
+    stringstyle=\color{codeGreen},
+    commentstyle=\color{codeMuted}\itshape,
+    emph={success,update_agent_graph},
+    emphstyle=\color{codeAccent}\bfseries,
+    backgroundcolor=\color{codeBg},
+    frame=single,
+    rulecolor=\color{codeBorder},
+    framesep=7pt,
+    numbers=left,
+    numberstyle=\ttfamily\scriptsize\color{codeMuted},
+    numbersep=9pt,
+    columns=fullflexible,
+    keepspaces=true,
+    showstringspaces=false,
+    breaklines=true,
+    tabsize=4
+}
 
 \title{AgentNet and Econmind}
 \author{Qining Shen}
@@ -14,10 +45,50 @@
 \begin{document}
 
 \maketitle
-\begin{frame}{Training Loop}
-    
+
+% Demo slide 1: exact source lines 345--350 from the AgentNet repository.
+\begin{frame}[fragile]{Training Loop: Execute, Evaluate, Evolve}
+\vspace{0.2em}
+\begin{lstlisting}[style=researchcode,firstnumber=345,gobble=4]
+    def fit(self):
+        logger.info("Experiment Start in Train Dataset!")
+        for task in self.train_dataset:
+            final_task_chain = self.solve_a_single_task(task)
+            result = self.evaluate_task_result(final_task_chain, task.correct_answer, "Train")
+            self.update_agent_graph(final_task_chain, result)
+\end{lstlisting}
+\vspace{0.5em}
+\begin{block}{Key takeaway}
+\small The trajectory is generated first, judged against ground truth, and then used to update the agent graph.
+\end{block}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/src/experiment.py\#L345-L350}{\texttt{AgentNet\_Code/src/experiment.py}, lines 345--350 (GitHub)}}
 \end{frame}
 
+% Demo slide 2: two verbatim excerpts; intervening lines are intentionally omitted.
+\begin{frame}[fragile]{Credit Assignment: Global Outcome, Local Labels}
+\begin{lstlisting}[style=researchcode,firstnumber=243,gobble=8]
+        success = result["success"]
+\end{lstlisting}
+\begin{lstlisting}[style=researchcode,firstnumber=253,gobble=8]
+        experience = single_task_history.experience
+        experience.success = success
+        # Add current experience to pool
+        if mode in ["Execution", "Split_Execution"]:
+            agent.add_executor_experience(experience)
+
+        elif mode in ["Decide_Next_Agent_ID", "Router_Decision"]:
+            agent.add_router_experience(experience)
+\end{lstlisting}
+\vspace{-0.4em}
+\begin{block}{Research observation}
+\footnotesize The same terminal \texttt{success} labels different local decisions. This is outcome-based attribution, not an explicit estimate of each agent's causal contribution.
+\end{block}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/src/experiment.py\#L240-L260}{\texttt{AgentNet\_Code/src/experiment.py}, lines 243 and 253--260 (GitHub)}}
+\end{frame}
+
+% Existing placeholders retained for later editing.
 \begin{frame}{Initialize Agent Graph}
     
 \end{frame}
@@ -25,6 +96,5 @@
 \begin{frame}{Select Initial Agent}
     
 \end{frame}
-
 
 \end{document}
