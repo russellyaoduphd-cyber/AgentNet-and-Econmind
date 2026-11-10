@@ -607,15 +607,15 @@
 {\scriptsize\color{codeMuted}Source: \href{https://github.com/zhentingqi/EoM/blob/main/hayekmas/base/mas.py\#L689-L724}{\texttt{hayekmas/base/mas.py}, lines 689--724 (GitHub)}}
 \end{frame}
 
-\begin{frame}{EoM: Stepwise Credit Chain}
+\begin{frame}{EoM: Stepwise Chain Construction}
 \vspace{0.4em}
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
-{\fontsize{6.7pt}{9.1pt}\selectfont
+{\fontsize{5.6pt}{7.6pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
 \codeline{689}{chain_window.append(winner)}
 \codeline{690}{if len(chain_window) > chain_window_size:}
 \codeline{691}{    chain_window = chain_window[-chain_window_size:]}
-\accentline{699}{    if self.reward_scheme == "path_reward_and_stepwise_reward":}
+\codeline{699}{    if self.reward_scheme == "path_reward_and_stepwise_reward":}
 \accentline{700}{        if split_chain and reward != 0:}
 \codeline{704}{            seen_ids = set()}
 \codeline{705}{            chain_uniq: List[BaseAgent] = []}
@@ -625,16 +625,30 @@
 \codeline{709}{                seen_ids.add(ag.id)}
 \codeline{710}{                chain_uniq.append(ag)}
 \accentline{711}{            share = reward / len(chain_uniq)}
-\codeline{712}{            for ag in chain_uniq:}
-\accentline{713}{                ag.gain_money(share)}
-\accentline{714}{                ag.gain_capability(share)}
-\accentline{723}{        else:}
-\accentline{724}{            winner.gain_money(reward)}
-\codeline{725}{            winner.gain_capability(reward)}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
-{\scriptsize\color{codeMuted}Source: \href{https://github.com/zhentingqi/EoM/blob/main/hayekmas/base/mas.py\#L689-L725}{\texttt{hayekmas/base/mas.py}, lines 689--725 (GitHub)}}
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zhentingqi/EoM/blob/main/hayekmas/base/mas.py\#L689-L711}{\texttt{hayekmas/base/mas.py}, lines 689--711 (GitHub)}}
+\end{frame}
+
+\begin{frame}{EoM: Stepwise Reward Payout}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.7pt}{9.1pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{699}{if self.reward_scheme == "path_reward_and_stepwise_reward":}
+\codeline{700}{    if split_chain and reward != 0:}
+\accentline{711}{        share = reward / len(chain_uniq)}
+\codeline{712}{        for ag in chain_uniq:}
+\accentline{713}{            ag.gain_money(share)}
+\accentline{714}{            ag.gain_capability(share)}
+\codeline{723}{    else:}
+\accentline{724}{        winner.gain_money(reward)}
+\accentline{725}{        winner.gain_capability(reward)}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zhentingqi/EoM/blob/main/hayekmas/base/mas.py\#L699-L725}{\texttt{hayekmas/base/mas.py}, lines 699--725 (GitHub)}}
 \end{frame}
 
 
@@ -670,11 +684,9 @@
 \begin{frame}{EoM: Centered and Scaled Rewards}
 \vspace{0.4em}
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
-{\fontsize{6.7pt}{9.1pt}\selectfont
+{\fontsize{5.7pt}{7.8pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
 \accentline{16}{reward_scheme: str = "path_reward_only"}
-\codeline{17}{path_reward_scale: float = 1.0}
-\codeline{19}{env_reward_scale: float = 1.0}
 \codeline{21}{center_env_reward: bool = True}
 \codeline{45}{step_reward_split_chain: bool = False}
 \codeline{46}{step_reward_chain_window: int = 3}
@@ -737,13 +749,10 @@
 \codeline{418}{else:}
 \accentline{419}{    payout_targets = path_agents}
 \accentline{421}{per_agent_reward = self.config.reward.path_reward_per_agent(pay_score, len(payout_targets))}
-\codeline{423}{for agent in payout_targets:}
-\accentline{424}{    agent.gain_money(per_agent_reward)}
-\accentline{425}{    agent.gain_capability(per_agent_reward)}
 \end{tabular}}
 \end{beamercolorbox}
 \vfill
-{\scriptsize\color{codeMuted}Source: \href{https://github.com/zhentingqi/EoM/blob/main/hayekmas/base/mas.py\#L404-L425}{\texttt{hayekmas/base/mas.py}, lines 404--425 (GitHub)}}
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zhentingqi/EoM/blob/main/hayekmas/base/mas.py\#L404-L421}{\texttt{hayekmas/base/mas.py}, lines 404--421 (GitHub)}}
 \end{frame}
 
 \begin{frame}{EoM: Wealth vs Capability Accounting}
