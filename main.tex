@@ -7,66 +7,444 @@
 \usepackage{amssymb}
 \usepackage{xcolor}
 \usepackage{hyperref}
-
-% Code is typeset using ordinary LaTeX, not a verbatim/fragile environment.
-% This avoids source-sync problems associated with generated verbatim content.
-\definecolor{codeBg}{RGB}{247,249,252}
 \definecolor{codeMuted}{RGB}{96,110,129}
 \definecolor{codeAccent}{RGB}{176,76,21}
-\newcommand{\codeline}[2]{\textcolor{codeMuted}{#1}&\texttt{\detokenize{#2}}\\[3pt]}
-\newcommand{\accentline}[2]{\textcolor{codeMuted}{#1}&\textcolor{codeAccent}{\texttt{\detokenize{#2}}}\\[3pt]}
-
+\newcommand{\codeline}[2]{\textcolor{codeMuted}{#1}&\texttt{\detokenize{#2}}\\[2pt]}
+\newcommand{\accentline}[2]{\textcolor{codeMuted}{#1}&\textcolor{codeAccent}{\texttt{\detokenize{#2}}}\\[2pt]}
 \title{AgentNet and Econmind}
 \author{Qining Shen}
 \date{November 2026}
-
 \begin{document}
 \maketitle
-
-\begin{frame}{Training Loop: Execute, Evaluate, Evolve}
-\vspace{1.0em}
-\begin{beamercolorbox}[sep=10pt,rounded=true]{block body}
-{\tiny
-\begin{tabular}{r@{\hspace{1.2em}}l}
+\begin{frame}{AgentNet: Training Loop}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.0pt}{8pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
 \codeline{345}{def fit(self):}
-\codeline{346}{    logger.info("Experiment Start in Train Dataset!")}
 \codeline{347}{    for task in self.train_dataset:}
 \codeline{348}{        final_task_chain = self.solve_a_single_task(task)}
 \codeline{349}{        result = self.evaluate_task_result(final_task_chain, task.correct_answer, "Train")}
 \accentline{350}{        self.update_agent_graph(final_task_chain, result)}
-\end{tabular}
-}
+\end{tabular}}
 \end{beamercolorbox}
 \vfill
 {\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/src/experiment.py\#L345-L350}{\texttt{AgentNet\_Code/src/experiment.py}, lines 345--350 (GitHub)}}
 \end{frame}
 
-\begin{frame}{Credit Assignment: Global Outcome, Local Labels}
-\vspace{0.8em}
-\begin{beamercolorbox}[sep=10pt,rounded=true]{block body}
-{\tiny
-\begin{tabular}{r@{\hspace{1.2em}}l}
-\accentline{243}{success = result["success"]}
-\end{tabular}
-\vspace{0.7em}
-\begin{tabular}{r@{\hspace{1.2em}}l}
-\codeline{253}{experience = single_task_history.experience}
-\accentline{254}{experience.success = success}
-\codeline{256}{if mode in ["Execution", "Split_Execution"]:}
-\codeline{257}{    agent.add_executor_experience(experience)}
-\codeline{259}{elif mode in ["Decide_Next_Agent_ID", "Router_Decision"]:}
-\codeline{260}{    agent.add_router_experience(experience)}
-\end{tabular}
-}
+\begin{frame}{AgentNet: Initialize Agent Graph}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.7pt}{8.7pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{18}{def __init__(self, agent_config, agent_graph_config):}
+\codeline{21}{    self.edge_weight = {}}
+\codeline{22}{    self.edge_success_rate = {}}
+\codeline{25}{    self.agent_neighbor_dict = self.initilize_graph(agent_graph_config)}
+\codeline{37}{    for source_agent_id, agent in agents.items():}
+\codeline{38}{        if source_agent_id not in self.edge_weight.keys():}
+\codeline{39}{            self.edge_weight[source_agent_id] = {}}
+\codeline{40}{            self.edge_success_rate[source_agent_id] = {}}
+\codeline{41}{        for target_agent_id, agent in agents.items():}
+\codeline{42}{            if source_agent_id != target_agent_id:}
+\accentline{43}{                self.edge_weight[source_agent_id][target_agent_id] = 1.0}
+\accentline{44}{                self.edge_success_rate[source_agent_id][target_agent_id] = 0.0}
+\end{tabular}}
 \end{beamercolorbox}
 \vfill
-{\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/src/experiment.py\#L240-L260}{\texttt{AgentNet\_Code/src/experiment.py}, lines 243 and 253--260 (GitHub)}}
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/src/agentgraph.py\#L18-L44}{\texttt{AgentNet\_Code/src/agentgraph.py}, lines 18--44 (GitHub)}}
 \end{frame}
 
-\begin{frame}{Initialize Agent Graph}
+\begin{frame}{AgentNet: Select Initial Agent}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.7pt}{8.7pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{74}{def select_an_agent(self, task_type):}
+\codeline{79}{    for agent_id in outcoming_agents_id:}
+\codeline{80}{        agent = self.agents[agent_id]}
+\codeline{82}{        agent_info = agent.get_self_info()}
+\codeline{84}{        abilities = agent_info["abilities"]}
+\codeline{89}{        ability_names = task_to_ability_map[task_type]}
+\codeline{90}{        total_value, ability_num = 0, 0}
+\codeline{91}{        for name in ability_names:}
+\codeline{92}{            ability_num += 1}
+\codeline{93}{            total_value += abilities[name]}
+\accentline{94}{        average_ability_value = total_value / ability_num}
+\codeline{102}{    if not neighbors_info:}
+\codeline{104}{        return self.sample_an_agent()}
+\accentline{113}{    best_agent_id = random.choice(best_agents)}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/src/agentgraph.py\#L74-L113}{\texttt{AgentNet\_Code/src/agentgraph.py}, lines 74--113 (GitHub)}}
 \end{frame}
 
-\begin{frame}{Select Initial Agent}
+\begin{frame}{AgentNet: Routing Decision}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{5.5pt}{7.1pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{63}{def router_decide_action(self, task, self_info, neighbors_info, task_history, decide_mode="Normal"):}
+\accentline{66}{    experiences = self.router_pool.get_relevant_experiences(task, self.agent_id, self.retrieval_num)}
+\codeline{68}{    query_prompt = self.router_make_prompt(}
+\codeline{69}{        experiences=experiences,}
+\codeline{70}{        task=task,}
+\codeline{71}{        decide_mode=decide_mode,}
+\codeline{73}{        neighbors_info=neighbors_info}
+\accentline{76}{    response = self.get_llm_response(}
+\codeline{77}{        system_prompt=ROUTER_SYSTEM_PROMPT,}
+\codeline{78}{        query_prompt=query_prompt}
+\accentline{83}{    decision = response_dict.get('DECISION', '').lower().strip()}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/src/agent.py\#L63-L83}{\texttt{AgentNet\_Code/src/agent.py}, lines 63--83 (GitHub)}}
 \end{frame}
 
+\begin{frame}{AgentNet: Task Execution}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.7pt}{8.7pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{86}{def solve_a_single_task(self, task):}
+\codeline{87}{    task_chain = TaskChain(task)}
+\codeline{90}{    current_agent_id = self.agent_graph.select_an_agent(task.task_type)}
+\codeline{95}{    while True:}
+\accentline{97}{        output = current_agent.decide_action(task_chain, forward_times)}
+\codeline{110}{        decision = output["decision"]}
+\codeline{116}{        if decision in ["forward"]:}
+\accentline{120}{            current_agent = self.agent_graph.agents[next_agent_id]}
+\codeline{121}{            forward_times -= 1}
+\accentline{132}{        elif decision == "execute":}
+\codeline{152}{            break}
+\accentline{155}{        elif decision in ["split"]:}
+\codeline{175}{            task_chain.create_next_task()}
+\codeline{177}{            output = current_agent.decide_next_agent_id(task_chain,self.constraints)}
+\codeline{208}{    return task_chain}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/src/experiment.py\#L86-L208}{\texttt{AgentNet\_Code/src/experiment.py}, lines 86--208 (GitHub)}}
+\end{frame}
+
+\begin{frame}{AgentNet: Executor and Memory}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{5.5pt}{7.1pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{790}{self.current_load += 1}
+\codeline{791}{self.total_task_num[current_task.task_type] += 1}
+\accentline{793}{relevant_experiences = self.executor_module.get_relevant_experiences(current_task)}
+\codeline{795}{if user_react == True:}
+\accentline{797}{    output = self.executor_module.generate_thought(current_task, relevant_experiences)}
+\codeline{798}{    current_task.set_thought(output["thought"])}
+\codeline{800}{    relevant_experiences_by_thought = self.executor_module.get_relevant_experiences_by_thought(current_task)}
+\accentline{801}{    relevant_experiences = relevant_experiences_by_thought}
+\codeline{805}{if decision == "execute":}
+\codeline{807}{elif decision == "split":}
+\codeline{810}{self.current_load -= 1}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/src/agent.py\#L790-L810}{\texttt{AgentNet\_Code/src/agent.py}, lines 790--810 (GitHub)}}
+\end{frame}
+
+\begin{frame}{AgentNet: Final Answer Evaluation}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.0pt}{8pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{213}{def evaluate_task_result(self, task_chain, correct_answer, mode="Train"):}
+\codeline{214}{    raw_result = task_chain.get_final_result()}
+\codeline{215}{    final_result = extract_answer(raw_result)}
+\accentline{219}{    success = evaluate_answer(final_result.lower().strip(), correct_answer.lower().strip())}
+\codeline{229}{    if mode == "Train":}
+\codeline{230}{        self.train_accuracy.update(success)}
+\codeline{233}{    if mode == "Test":}
+\codeline{234}{        self.test_accuracy.update(success)}
+\codeline{237}{    return result}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/src/experiment.py\#L213-L237}{\texttt{AgentNet\_Code/src/experiment.py}, lines 213--237 (GitHub)}}
+\end{frame}
+
+\begin{frame}{AgentNet: Experience Update}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.7pt}{8.7pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{240}{def update_agent_graph(self, task_chain, result):}
+\codeline{243}{    success = result["success"]}
+\codeline{245}{    task_history = task_chain.task_history}
+\codeline{246}{    for single_task_history in task_history:}
+\codeline{253}{        experience = single_task_history.experience}
+\accentline{254}{        experience.success = success}
+\codeline{256}{        if mode in ["Execution", "Split_Execution"]:}
+\codeline{257}{            agent.add_executor_experience(experience)}
+\codeline{259}{        elif mode in ["Decide_Next_Agent_ID", "Router_Decision"]:}
+\codeline{260}{            agent.add_router_experience(experience)}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/src/experiment.py\#L240-L260}{\texttt{AgentNet\_Code/src/experiment.py}, lines 240--260 (GitHub)}}
+\end{frame}
+
+\begin{frame}{AgentNet: Edge Update Call}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{5.5pt}{7.1pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{243}{success = result["success"]}
+\codeline{264}{        source_agent_id = single_task_history.current_agent_id}
+\codeline{266}{        if "NEXT_AGENT_ID" in single_task_history.format_response.keys():}
+\codeline{267}{            target_agent_id = single_task_history.format_response["NEXT_AGENT_ID"].strip()}
+\codeline{272}{            execution_time = single_task_history.execution_time}
+\codeline{274}{            if target_agent_id.isdigit():}
+\codeline{275}{                target_agent_id = int(target_agent_id)}
+\accentline{278}{                self.agent_graph.update_edge_weight(source_agent_id, target_agent_id, execution_time, success)}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/src/experiment.py\#L243-L278}{\texttt{AgentNet\_Code/src/experiment.py}, lines 243--278 (GitHub)}}
+\end{frame}
+
+\begin{frame}{AgentNet: Edge Weight Rule}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.0pt}{8pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{140}{def update_edge_weight(self, source_agent_id, target_agent_id, execution_time, success):}
+\codeline{146}{    current_weight = self.edge_weight[source_agent_id].get(target_agent_id, 1.0)}
+\accentline{147}{    success_factor = 1.1 if success else 0.9}
+\codeline{148}{    time_factor = min(1.0, 1.0 / (execution_time * 0.1)) if execution_time > 0 else 1.0}
+\accentline{152}{    new_weight = current_weight * success_factor * time_factor}
+\accentline{155}{    self.edge_weight[source_agent_id][target_agent_id] = max(0.1, min(2.0, new_weight))}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/src/agentgraph.py\#L140-L155}{\texttt{AgentNet\_Code/src/agentgraph.py}, lines 140--155 (GitHub)}}
+\end{frame}
+
+\begin{frame}{AgentNet: Agent Ability Update}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.0pt}{8pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{849}{def update_abilities(self, task_type, complexity, execution_time, success):}
+\codeline{851}{    if success:}
+\codeline{852}{        self.successful_task_num[task_type] += 1}
+\accentline{855}{        ability_gain = 0.1}
+\codeline{857}{        for ability_type in task_to_ability_map[task_type]:}
+\accentline{858}{            self.abilities[ability_type] = min(2.0, self.abilities[ability_type] + ability_gain)}
+\codeline{865}{    else:}
+\codeline{866}{        pass}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/src/agent.py\#L849-L866}{\texttt{AgentNet\_Code/src/agent.py}, lines 849--866 (GitHub)}}
+\end{frame}
+
+\begin{frame}{EoM: Training Episode}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.0pt}{8pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{770}{def _train_forward(self, env: BaseEnv, step_ckpt_save_path: Optional[str] = None):}
+\accentline{820}{        self._run_auction_action_loop(env, step_ckpt_save_path=step_ckpt_save_path)}
+\codeline{822}{        if self.reward_scheme in ("path_reward_only", "path_reward_and_stepwise_reward"):}
+\accentline{823}{            reward_details = self._apply_path_rewards(env)}
+\accentline{849}{        bankrupt_agents = self.remove_bankrupt_agents(env)}
+\codeline{850}{        self._ensure_necessary_roles_exist(bankrupt_agents, env)}
+\codeline{852}{        if bankrupt_agents:}
+\codeline{872}{            self.logger.log("✅ No bankruptcies - episode ACCEPTED", indent=1, must_print=True)}
+\codeline{900}{    self._resolve_bankruptcy_births(all_bankrupts_in_episode, env)}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zhentingqi/EoM/blob/main/hayekmas/base/mas.py\#L770-L900}{\texttt{hayekmas/base/mas.py}, lines 770--900 (GitHub)}}
+\end{frame}
+
+\begin{frame}{EoM: Agent Activation}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{5.5pt}{7.1pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{502}{def _run_auction_action_loop(self, env: BaseEnv, step_ckpt_save_path: Optional[str] = None):}
+\codeline{528}{    for step in tqdm(range(self.max_steps_per_episode), disable=not self.logger.should_show_progress_bar()):}
+\codeline{531}{        terminal_mode = self._is_terminal_mode_step(step)}
+\codeline{536}{        if terminal_mode:}
+\codeline{537}{            all_agents = self.population.get_all()}
+\accentline{538}{            active_agents = self._restrict_agents_for_terminal_mode(all_agents)}
+\accentline{559}{            active_agents = self.population.get_active(}
+\codeline{576}{            )}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zhentingqi/EoM/blob/main/hayekmas/base/mas.py\#L502-L577}{\texttt{hayekmas/base/mas.py}, lines 502--577 (GitHub)}}
+\end{frame}
+
+\begin{frame}{EoM: Bid Schemes}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.7pt}{8.7pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{587}{if self.bid_scheme == "fixed":}
+\codeline{590}{    for agent in active_agents:}
+\codeline{591}{        if agent.get_status() == AgentStatus.NOVICE:}
+\accentline{592}{            agent.set_bid(self.base_bid + self.novice_bid_epsilon)}
+\codeline{600}{        elif agent.get_status() == AgentStatus.VETERAN:}
+\codeline{601}{            agent.set_bid(self.base_bid)}
+\codeline{602}{elif self.bid_scheme == "fixed_with_eps":}
+\codeline{620}{elif self.bid_scheme == "holland":}
+\codeline{643}{            if agent.wealth >= self.tycoon_wealth_threshold:}
+\accentline{645}{                agent.set_bid(self.holland_alpha * agent.wealth)}
+\codeline{655}{        elif agent.get_status() == AgentStatus.TYCOON:}
+\accentline{656}{            agent.set_bid(self.holland_alpha * agent.wealth)}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zhentingqi/EoM/blob/main/hayekmas/base/mas.py\#L587-L656}{\texttt{hayekmas/base/mas.py}, lines 587--656 (GitHub)}}
+\end{frame}
+
+\begin{frame}{EoM: Auction and Payment}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.7pt}{8.7pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{663}{max_bid = max(a.get_bid() for a in active_agents)}
+\codeline{664}{top_bidders = [a for a in active_agents if a.get_bid() == max_bid]}
+\accentline{665}{winner = random.choice(top_bidders)}
+\codeline{669}{if training:}
+\accentline{670}{    payment = winner.get_bid()}
+\codeline{671}{    winner.lose_money(payment)}
+\codeline{673}{    if prev_winner is not None:}
+\accentline{674}{        prev_winner.gain_money(payment)}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zhentingqi/EoM/blob/main/hayekmas/base/mas.py\#L663-L675}{\texttt{hayekmas/base/mas.py}, lines 663--675 (GitHub)}}
+\end{frame}
+
+\begin{frame}{EoM: Action and Step Reward}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.7pt}{8.7pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{689}{chain_window.append(winner)}
+\accentline{692}{action = winner.act(env)}
+\accentline{696}{reward = env.apply(action)}
+\codeline{699}{    if self.reward_scheme == "path_reward_and_stepwise_reward":}
+\codeline{700}{        if split_chain and reward != 0:}
+\codeline{704}{            seen_ids = set()}
+\codeline{705}{            chain_uniq: List[BaseAgent] = []}
+\codeline{706}{            for ag in chain_window:}
+\accentline{711}{            share = reward / len(chain_uniq)}
+\codeline{712}{            for ag in chain_uniq:}
+\accentline{713}{                ag.gain_money(share)}
+\codeline{714}{                ag.gain_capability(share)}
+\codeline{722}{                )}
+\codeline{723}{        else:}
+\codeline{724}{            winner.gain_money(reward)}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zhentingqi/EoM/blob/main/hayekmas/base/mas.py\#L689-L724}{\texttt{hayekmas/base/mas.py}, lines 689--724 (GitHub)}}
+\end{frame}
+
+\begin{frame}{EoM: Reward Configuration}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.7pt}{8.7pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{11}{class RewardConfig:}
+\accentline{16}{    reward_scheme: str = "path_reward_only"}
+\codeline{17}{    path_reward_scale: float = 1.0}
+\codeline{19}{    env_reward_scale: float = 1.0}
+\codeline{21}{    center_env_reward: bool = True}
+\accentline{36}{    path_reward_per_unique_author: bool = False}
+\accentline{45}{    step_reward_split_chain: bool = False}
+\codeline{46}{    step_reward_chain_window: int = 3}
+\codeline{48}{    def centered_score(self, score: float) -> float:}
+\codeline{49}{        return 2.0 * score - 1.0}
+\codeline{51}{    def reward_signal(self, score: float) -> float:}
+\codeline{53}{        base = self.centered_score(score) if self.center_env_reward else score}
+\codeline{54}{        return self.env_reward_scale * base}
+\codeline{59}{    def path_reward_per_agent(self, score: float, path_length: int) -> float:}
+\codeline{60}{        if path_length <= 0:}
+\codeline{61}{            return 0.0}
+\accentline{62}{        return self.path_reward_scale * self.reward_signal(score) / path_length}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zhentingqi/EoM/blob/main/hayekmas/base/config.py\#L11-L62}{\texttt{hayekmas/base/config.py}, lines 11--62 (GitHub)}}
+\end{frame}
+
+\begin{frame}{EoM: Terminal Path Reward}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.0pt}{8pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{388}{def _apply_path_rewards(self, env: BaseEnv) -> Dict[str, Any]:}
+\codeline{401}{    score = self._get_terminal_score(env)}
+\codeline{402}{    pay_score = self._get_path_reward_score(env)}
+\codeline{403}{    reward_signal = self.config.reward.reward_signal(pay_score)}
+\codeline{404}{    path_agents = self._get_episode_path_agents(env)}
+\accentline{409}{    if self.config.reward.path_reward_per_unique_author:}
+\codeline{417}{        payout_targets = unique_agents}
+\codeline{418}{    else:}
+\codeline{419}{        payout_targets = path_agents}
+\accentline{421}{    per_agent_reward = self.config.reward.path_reward_per_agent(pay_score, len(payout_targets))}
+\codeline{423}{    for agent in payout_targets:}
+\accentline{424}{        agent.gain_money(per_agent_reward)}
+\accentline{425}{        agent.gain_capability(per_agent_reward)}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zhentingqi/EoM/blob/main/hayekmas/base/mas.py\#L388-L425}{\texttt{hayekmas/base/mas.py}, lines 388--425 (GitHub)}}
+\end{frame}
+
+\begin{frame}{EoM: Bankruptcy and Birth}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.0pt}{8pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\accentline{849}{    bankrupt_agents = self.remove_bankrupt_agents(env)}
+\codeline{850}{    self._ensure_necessary_roles_exist(bankrupt_agents, env)}
+\codeline{852}{    if bankrupt_agents:}
+\codeline{872}{        self.logger.log("✅ No bankruptcies - episode ACCEPTED", indent=1, must_print=True)}
+\codeline{886}{if rent_due and not in_preheat:}
+\codeline{888}{    for agent in self.population.get_all():}
+\codeline{889}{        agent.lose_money(rent)}
+\accentline{900}{self._resolve_bankruptcy_births(all_bankrupts_in_episode, env)}
+\accentline{905}{    self._periodic_births(env)}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zhentingqi/EoM/blob/main/hayekmas/base/mas.py\#L849-L905}{\texttt{hayekmas/base/mas.py}, lines 849--905 (GitHub)}}
+\end{frame}
+
+\begin{frame}{EoM: Evolutionary Birth}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.7pt}{8.7pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{285}{def _resolve_bankruptcy_births(}
+\codeline{292}{        return}
+\codeline{295}{    p_a = self.config.evolution.p_a}
+\codeline{296}{    p_b = self.config.evolution.p_b}
+\accentline{297}{    for bankrupt in all_bankrupts_in_episode:}
+\codeline{298}{        draw = random.random()}
+\accentline{299}{        if draw < p_a:}
+\codeline{300}{            parent = self._select_best_agent_for_good_birth()}
+\accentline{301}{            if parent is not None:}
+\codeline{302}{                self._add_born_agent(self.birth_good_agent(parent))}
+\codeline{303}{        elif draw < p_a + p_b:}
+\codeline{304}{            self._add_born_agent(self.birth_bad_agent(bankrupt, env))}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zhentingqi/EoM/blob/main/hayekmas/base/mas.py\#L285-L304}{\texttt{hayekmas/base/mas.py}, lines 285--304 (GitHub)}}
+\end{frame}
 \end{document}
