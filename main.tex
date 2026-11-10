@@ -80,6 +80,146 @@
 {\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/src/agentgraph.py\#L74-L113}{\texttt{AgentNet\_Code/src/agentgraph.py}, lines 74--113 (GitHub)}}
 \end{frame}
 
+\begin{frame}{AgentNet: Ability Vector Configuration}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.7pt}{8.98pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{11}{default_agent_config: &default_agent_config}
+\codeline{12}{  LLM: gpt-4o-mini}
+\accentline{13}{  abilities:}
+\accentline{14}{    reasoning: 0.6}
+\accentline{15}{    mathematical: 0.6}
+\accentline{16}{    language: 0.6}
+\accentline{17}{    knowledge: 0.6}
+\accentline{18}{    sequence: 0.6}
+\accentline{19}{    spatial: 0.6}
+\accentline{20}{    inference: 0.6}
+\codeline{29}{agent_config:}
+\codeline{30}{- id: 0}
+\codeline{31}{  config: *default_agent_config}
+\codeline{32}{- id: 1}
+\codeline{33}{  config: *default_agent_config}
+\codeline{34}{- id: 2}
+\codeline{35}{  config: *default_agent_config}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/config/experiment/bigbenchhard_new_abilities.yaml\#L11-L35}{\texttt{AgentNet\_Code/config/experiment/bigbenchhard\_new\_abilities.yaml}, lines 11--35 (GitHub)}}
+\end{frame}
+
+\begin{frame}{AgentNet: Task-to-Ability Mapping}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.7pt}{8.98pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\accentline{157}{"causal_judgement": [}
+\codeline{158}{    "reasoning",}
+\codeline{159}{    "inference"}
+\codeline{160}{],}
+\codeline{177}{"multistep_arithmetic_two": [}
+\codeline{178}{    "mathematical"}
+\codeline{179}{],}
+\accentline{180}{"geometric_shapes": [}
+\codeline{181}{    "mathematical",}
+\codeline{182}{    "spatial"}
+\codeline{183}{],}
+\codeline{191}{"date_understanding": [}
+\codeline{192}{    "mathematical",}
+\codeline{193}{    "language"}
+\codeline{194}{],}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/config/setting.py\#L157-L194}{\texttt{AgentNet\_Code/config/setting.py}, lines 157--194 (GitHub)}}
+\end{frame}
+
+\begin{frame}{AgentNet: Router System Prompt}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{4.3pt}{5.76pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{241}{ROUTER_SYSTEM_PROMPT = """}
+\codeline{242}{You are an intelligent agent in a multi-agent system. Your role is to analyze tasks based on your expertise and collaborate with other specialized agents.}
+\codeline{243}{You are a task router - make independent decisions within your expertise domain.}
+\accentline{244}{Consider agent abilities and network topology, but prioritize expertise matching.}
+\codeline{245}{"""}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/config/setting.py\#L241-L245}{\texttt{AgentNet\_Code/config/setting.py}, lines 241--245 (GitHub)}}
+\end{frame}
+
+\begin{frame}{AgentNet: Router Query Prompt}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.7pt}{8.98pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\accentline{248}{ROUTER_PROMPT_FORMAT = """}
+\codeline{249}{**Major Task**: {major_problem}}
+\codeline{251}{**Your Expertise & Experience**:}
+\accentline{252}{{current_agent_info}}
+\codeline{254}{**Previous Related Successes**:}
+\accentline{255}{{experiences}}
+\codeline{257}{**Current Task Details**:}
+\codeline{258}{- Problem: {task_description}}
+\codeline{259}{- Type: {task_type}}
+\codeline{261}{**Progress**:}
+\codeline{262}{- Completed Steps: {task_context}}
+\codeline{264}{**Available Specialists**: some infomation and status of other agents}
+\accentline{265}{{agent_info}}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/config/setting.py\#L248-L265}{\texttt{AgentNet\_Code/config/setting.py}, lines 248--265 (GitHub)}}
+\end{frame}
+
+\begin{frame}{AgentNet: Router Decision Instructions}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{5.2pt}{6.97pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{274}{Analyze and decide:}
+\accentline{275}{1. Should this task be split into executable parts, executed here, or forwarded to another agent?}
+\codeline{280}{3. If you decide to forward the task, consider the following:}
+\codeline{281}{   - Who is the most suitable agent to forward the task to? Consider:}
+\codeline{282}{     - Agent abilities for this task type}
+\codeline{283}{     - Success rate}
+\codeline{284}{     - Network connection (prefer direct neighbors)}
+\codeline{289}{Provide your decision in the following format:}
+\accentline{291}{DECISION: [split/forward/execute]}
+\codeline{292}{REASON: [detailed explanation of your decision, including ability considerations]}
+\accentline{296}{NEXT_AGENT_ID: [The ID of the agent to whom the task should be forwarded if decided to forward]}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/config/setting.py\#L274-L296}{\texttt{AgentNet\_Code/config/setting.py}, lines 274--296 (GitHub)}}
+\end{frame}
+
+\begin{frame}{AgentNet: Prompt Construction and LLM Call}
+\vspace{0.4em}
+\begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
+{\fontsize{6.7pt}{8.98pt}\selectfont
+\begin{tabular}{r@{\hspace{0.8em}}l}
+\codeline{66}{experiences = self.router_pool.get_relevant_experiences(task, self.agent_id, self.retrieval_num)}
+\codeline{68}{query_prompt = self.router_make_prompt(}
+\codeline{69}{    experiences=experiences,}
+\codeline{70}{    task=task,}
+\codeline{71}{    decide_mode=decide_mode,}
+\codeline{72}{    self_info=self_info,}
+\codeline{73}{    neighbors_info=neighbors_info}
+\codeline{74}{    )}
+\accentline{76}{response = self.get_llm_response(}
+\accentline{77}{    system_prompt=ROUTER_SYSTEM_PROMPT,}
+\accentline{78}{    query_prompt=query_prompt}
+\codeline{79}{    )}
+\codeline{83}{decision = response_dict.get('DECISION', '').lower().strip()}
+\end{tabular}}
+\end{beamercolorbox}
+\vfill
+{\scriptsize\color{codeMuted}Source: \href{https://github.com/zoe-yyx/AgentNet/blob/main/AgentNet_Code/src/agent.py\#L66-L83}{\texttt{AgentNet\_Code/src/agent.py}, lines 66--83 (GitHub)}}
+\end{frame}
+
 \begin{frame}{AgentNet: Routing Decision}
 \vspace{0.4em}
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
