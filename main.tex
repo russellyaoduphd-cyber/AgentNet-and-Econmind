@@ -418,15 +418,16 @@
 \begin{beamercolorbox}[sep=9pt,rounded=true]{block body}
 {\fontsize{5.1pt}{6.9pt}\selectfont
 \begin{tabular}{r@{\hspace{0.8em}}l}
-\codeline{140}{def update_edge_weight(self, source_agent_id, target_agent_id, execution_time, success):}
-\codeline{142}{    current_rate = self.edge_success_rate[source_agent_id].get(target_agent_id, 0.6)}
-\accentline{143}{    self.edge_success_rate[source_agent_id][target_agent_id] = current_rate * 0.9 + (1.0 if success else 0.0) * 0.1}
 \codeline{121}{def collect_neighbors_info(self, agent_id, task):}
 \codeline{122}{    outcoming_neighbors_id  = self.agent_neighbor_dict[agent_id]["outcoming_agent_id"]}
 \codeline{124}{    for neighbor_id in outcoming_neighbors_id:}
 \accentline{125}{        if self.edge_weight[agent_id][neighbor_id] <= 0.3:}
 \codeline{127}{            continue}
 \codeline{128}{        neighbor_agent = self.agents[neighbor_id]}
+\codeline{140}{def update_edge_weight(self, source_agent_id, target_agent_id, execution_time, success):}
+\codeline{142}{    current_rate = self.edge_success_rate[source_agent_id].get(target_agent_id, 0.6)}
+\accentline{143}{    self.edge_success_rate[source_agent_id][target_agent_id] = current_rate * 0.9 + (1.0 if success else 0.0) * 0.1}
+\codeline{155}{    self.edge_weight[source_agent_id][target_agent_id] = max(0.1, min(2.0, new_weight))}
 \accentline{160}{        self.agent_neighbor_dict[source_agent_id]["outcoming_agent_id"].remove(target_agent_id)}
 \end{tabular}}
 \end{beamercolorbox}
